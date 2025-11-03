@@ -25,7 +25,7 @@ public class FollowingService {
         }
 
         FollowingEntity entity = FollowingEntity.builder()
-                .followingId(followerId)
+                .followerId(followerId)
                 .followeeId(followeeId)
                 .createdAt(Instant.now().toEpochMilli())
                 .build();
