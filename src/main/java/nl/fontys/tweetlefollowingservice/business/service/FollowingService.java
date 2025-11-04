@@ -1,6 +1,5 @@
 package nl.fontys.tweetlefollowingservice.business.service;
 
-import lombok.RequiredArgsConstructor;
 import nl.fontys.tweetlefollowingservice.persistence.entity.FollowingEntity;
 import nl.fontys.tweetlefollowingservice.persistence.repository.FollowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class FollowingService {
             throw new IllegalArgumentException("You cannot follow yourself.");
         }
 
-        if (followingRepository.existsByFollowingIdAndFolloweeId(followerId, followeeId)) {
+        if (followingRepository.existsByFollowerIdAndFolloweeId(followerId, followeeId)) {
             throw new IllegalStateException("Already following this user.");
         }
 
@@ -34,11 +33,11 @@ public class FollowingService {
     }
 
     public void unfollowUser(Long followerId, Long followeeId) {
-        followingRepository.deleteByFollowingIdAndFolloweeId(followerId, followeeId);
+        followingRepository.deleteByFollowerIdAndFolloweeId(followerId, followeeId);
     }
 
     public List<FollowingEntity> getFollowing(Long followerId) {
-        return followingRepository.findByFollowingId(followerId);
+        return followingRepository.findByFollowerId(followerId);
     }
 
     public List<FollowingEntity> getFollowers(Long followeeId) {

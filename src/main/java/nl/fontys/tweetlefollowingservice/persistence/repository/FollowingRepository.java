@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface FollowingRepository extends JpaRepository<FollowingEntity, Long> {
-    List<FollowingEntity> findByFollowingId(Long followingId);
+    List<FollowingEntity> findByFollowerId(Long followerId);
     List<FollowingEntity> findByFolloweeId(Long followeeId);
-    void deleteByFollowingIdAndFolloweeId(Long followingId, Long followeeId);
-    boolean existsByFollowingIdAndFolloweeId(Long followingId, Long followeeId);
+    void deleteByFollowerIdAndFolloweeId(Long followerId, Long followeeId);
+    boolean existsByFollowerIdAndFolloweeId(Long followerId, Long followeeId);
 }
