@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  following-postgres:
+    image: postgres:latest
+    container_name: following-postgres
+    restart: always
+    volumes:
+      - following-data:/var/lib/postgresql
+    ports:
+      - "5433:5432"
+    expose:
+      - 5433
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: followingdb
+    networks:
+      - tweetle-network
+
+  following-service:
+    build: .
+    restart: on-failure
+    container_name: following-api
+    environment:
+      FOLLOWING_DB_USER: root
+      FOLLOWING_DB_PASSWORD: admin
+      FOLLOWING_DB_URL: jdbc:postgresql://following-postgres:5433/followingdb?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_APPLICATION_NAME: tweetle-following-service
+      SERVER_PORT: 8004
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+    ports:
+      - "8004:8004"
+    depends_on:
+      - following-postgres
+    networks:
+      - tweetle-network
+
+volumes:
+  following-data:
+
+networks:
+  tweetle-network:
+    external: true
