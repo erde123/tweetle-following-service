@@ -39,3 +39,13 @@ spring:
   sql:
     init:
       platform: postgres
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin
+
+rabbitmq:
+  exchange:
+    name: tweetle.exchange

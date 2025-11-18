@@ -21,9 +21,9 @@ spring:
           audiences: https://tweetle/api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/followingservice
-    username: admin
-    password: password
+    url: jdbc:postgresql://localhost:5433/followingdb
+    username: root
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -33,3 +33,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+rabbitmq:
+  exchange:
+    name: tweetle.exchange
