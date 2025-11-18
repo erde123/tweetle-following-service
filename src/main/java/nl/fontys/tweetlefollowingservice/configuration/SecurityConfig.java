@@ -16,14 +16,11 @@ public class SecurityConfig {
         return http
                 .cors(e -> Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(req -> req.requestMatchers(
-                                "/api/following/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                                ).permitAll()
-                        .anyRequest()
-                        .authenticated())
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/api/follow/v3/api-docs").permitAll()
+                        .requestMatchers("/api/follow/**").authenticated()
+                        .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .build();
     }
