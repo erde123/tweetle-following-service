@@ -1,8 +1,12 @@
 package nl.fontys.tweetlefollowingservice.business.service;
 
+import jakarta.transaction.Transactional;
+import nl.fontys.tweetlefollowingservice.domain.FollowEvent;
 import nl.fontys.tweetlefollowingservice.persistence.entity.FollowingEntity;
 import nl.fontys.tweetlefollowingservice.persistence.repository.FollowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -11,8 +15,13 @@ import java.util.List;
 @Service
 public class FollowingService {
 
+    private static final Logger log = LoggerFactory.getLogger(FollowingService.class);
+
     @Autowired
     private FollowingRepository followingRepository;
+
+    @Autowired
+    private PublishService publishService;
 
     public FollowingEntity followUser(Long followerId, Long followeeId) {
         if (followerId.equals(followeeId)) {
@@ -29,11 +38,20 @@ public class FollowingService {
                 .createdAt(Instant.now().toEpochMilli())
                 .build();
 
-        return followingRepository.save(entity);
+        FollowingEntity saved = followingRepository.save(entity);
+
+        publishService.publishFollowCreated(new FollowEvent(followerId, followeeId));
+        log.info("User {} followed {}", followerId, followeeId);
+
+        return saved;
     }
 
+    @Transactional
     public void unfollowUser(Long followerId, Long followeeId) {
         followingRepository.deleteByFollowerIdAndFolloweeId(followerId, followeeId);
+
+        publishService.publishFollowDeleted(new FollowEvent(followerId, followeeId));
+        log.info("User {} unfollowed {}", followerId, followeeId);
     }
 
     public List<FollowingEntity> getFollowing(Long followerId) {
@@ -44,4 +62,3 @@ public class FollowingService {
         return followingRepository.findByFolloweeId(followeeId);
     }
 }
-
