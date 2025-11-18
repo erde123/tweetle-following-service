@@ -20,6 +20,9 @@ class FollowingServiceTest {
     @InjectMocks
     private FollowingService followingService;
 
+    @Mock
+    private PublishService publishService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -72,6 +75,7 @@ class FollowingServiceTest {
         assertEquals("Already following this user.", exception.getMessage());
     }
 
+
     @Test
     void unfollowUser_ShouldCallDelete() {
         Long followerId = 1L;
@@ -79,8 +83,8 @@ class FollowingServiceTest {
 
         followingService.unfollowUser(followerId, followeeId);
 
-        verify(followingRepository, times(1))
-                .deleteByFollowerIdAndFolloweeId(followerId, followeeId);
+        verify(followingRepository).deleteByFollowerIdAndFolloweeId(followerId, followeeId);
+        verify(publishService).publishFollowDeleted(any());
     }
 
     @Test
