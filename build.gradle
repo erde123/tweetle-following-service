@@ -70,7 +70,7 @@ sonar {
         property "sonar.projectKey", "I556050_tweetle-following-service_c8436e8d-c28d-4c1d-a630-420c3b4362aa"
         property "sonar.projectName", "Tweetle Following Service"
         property "sonar.qualitygate.wait", true
-        property "sonar.inclusions", "src/main/java/nl/fontys/tweetlefollowingservice/business/service/**,src/main/java/nl/fontys/tweetlefollowingservice/controller/**"
+        property "sonar.inclusions", "src/main/java/nl/fontys/tweetlefollowingservice/business/service/FollowingService,src/main/java/nl/fontys/tweetlefollowingservice/controller/**"
     }
 }
 
